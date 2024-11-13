@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 
 //ROUTES
 
-app.use('/api/game', Game);
+app.use('/japi/game', Game);
 
 
 

@@ -47,12 +47,11 @@ var Global = {
 
 
     Ruta: {
-        Raiz: "/GophGame",
-        Url: "http://localhost:4004/api/",
-        //Url: "https://goph.com.co/iapi/iapi/",
-        // Url: "http://192.168.7.248:4002/api/",
+        Raiz: "/gophgame",
+        // Url: "http://localhost:4004/api/",
+        Url: "https://goph.com.co/japi/japi/",
 
-        version: "1.0.38",
+        version: "1.0.1",
         Ipin: "OpenSesame159*",
     },
 
