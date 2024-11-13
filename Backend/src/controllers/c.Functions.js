@@ -137,8 +137,9 @@ export function Randon(max) {
 export async function CHATGPT(prompt) {
   return new Promise(async (resolve, reject) => {
     try {
+      var pss = `NmNMVXowNUhKdmFpMW1lbE54VURKM00xUkViR3RPY0ZWclJWcGpTbWhsUzJ0eloyNU1XRFZzVFZSVmIwUTNObU5XVm1KZlVVbzNlbUpQZVU5aE1YaE5iRGhCUlRSNVQzTk5TbWx6ZGtwS1dVdDJaMVF6UW14aWEwWktiMUpVYVZBMGFsUmZOV05rWkZGUWEzZEdUVmxLUjB0Q1pVUmhiSGhUVFhscGEwOXNZakZ2ZWpCUVJtSnlUVlpITUZCWFJVNUdjR1F6VEZkeFRsSkpNbk42ZVVwa1NqVkJXVUU9YzJzdGNKOWJwcA==`
       const openai = new OpenAI({
-        apiKey: 'sdfsdfsdfsdfsdf',
+        apiKey: DescifrarGoph(pss),
         organization: 'org-y7fylm1QiFQ9rW2M2w86rkcX',
       });
       const completion = await openai.chat.completions.create({
