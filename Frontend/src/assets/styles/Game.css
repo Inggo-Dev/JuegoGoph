@@ -1,0 +1,156 @@
+body {
+  height: 100vh;
+  background: radial-gradient(circle at center, #1b1f4b, #0d0a30);
+}
+
+.question-box {
+  background: #263973;
+  border-radius: 30px;
+  padding: 20px;
+
+  color: white;
+  font-size: 1.5em;
+  text-align: center;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.options-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.option {
+  background: #263973;
+  color: #ffa500; /* Color dorado */
+  font-weight: bold;
+  border: 2px solid #ffffff;
+  border-radius: 20px;
+  padding: 15px;
+
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.btnoption {
+  background: #263973;
+  color: #ffa500; /* Color dorado */
+  font-weight: bold;
+  border: 2px solid #ffffff;
+  border-radius: 20px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  flex-grow: 1;
+}
+
+.btnoicon {
+  background: #263973;
+  color: #ffa500; /* Color dorado */
+  font-weight: bold;
+  border: 2px solid #ffffff;
+  border-radius: 20px;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  flex-grow: 1;
+}
+
+.btnoicon:hover {
+  background-color: #2d0e53;
+  transform: scale(1.01);
+}
+
+.btnoption:hover {
+  background-color: #2d0e53;
+  transform: scale(1.01);
+}
+
+.btnoption-lose:active {
+  background-color: #ffa500; /* Cambia el color cuando se hace clic */
+  color: #ffffff;
+}
+
+.btnoption-success:active {
+  background-color: #198754; /* Cambia el color cuando se hace clic */
+  color: #ffffff;
+}
+
+.btnoption-danger {
+  background-color: #e60a0a; /* Cambia el color cuando se hace clic */
+  color: #ffffff;
+}
+
+.Icon_G {
+  width: 80px;
+  height: 80px;
+}
+.Icon_S {
+  height: 80px;
+}
+
+.Icon_E {
+  height: 80px;
+  width: 100%;
+}
+
+.row.g-3 {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.row.g-3 .col-12 {
+  display: flex;
+}
+
+.transparent-card {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0
+  ); /* Fondo completamente transparente */
+  border: none; /* Opcional: eliminar el borde */
+  box-shadow: none; /* Opcional: quitar la sombra */
+}
+
+.transparent-card-2 {
+    background-color: rgba(
+      255,
+      255,
+      255,
+      0
+    ); /* Fondo completamente transparente */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+
+.card-text {
+  color: #ffa500; /* Color dorado */
+}
+
+.ant-progress-text{
+      color: #ffa500 !important; /* Color dorado */
+}
+
+@keyframes parpadeo-verde {
+  0% { background-color: #198754; }
+  50% { background-color: #28a745; }
+  100% { background-color: #198754; }
+}
+
+@keyframes parpadeo-rojo {
+  0% { background-color: #e60a0a; }
+  50% { background-color: #c43a48; }
+  100% { background-color: #e60a0a; }
+}
+
+.btn-parpadeo-verde {
+  animation: parpadeo-verde 0.3s infinite;
+}
+
+.btn-parpadeo-rojo {
+  animation: parpadeo-rojo 0.3s infinite;
+}
