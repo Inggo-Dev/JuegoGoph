@@ -138,7 +138,7 @@ export async function CHATGPT(prompt) {
   return new Promise(async (resolve, reject) => {
     try {
       const openai = new OpenAI({
-        apiKey: '',
+        apiKey: 'sdfsdfsdfsdfsdf',
         organization: 'org-y7fylm1QiFQ9rW2M2w86rkcX',
       });
       const completion = await openai.chat.completions.create({
