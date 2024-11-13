@@ -1,0 +1,41 @@
+{
+  "name": "backend_interactivo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js --exec babel-node",
+    "build": "babel src --out-dir dist",
+    "start": "node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "bcrypt": "^5.1.1",
+    "buffer": "^6.0.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jimp": "^0.22.8",
+    "morgan": "^1.10.0",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.15",
+    "openai": "^4.68.0",
+    "path": "^0.12.7",
+    "pdf-parse": "^1.1.1",
+    "pdfkit": "^0.15.0",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "qrcode": "^1.5.4",
+    "sequelize": "^6.21.4",
+    "universal-cookie": "^4.0.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "nodemon": "^3.1.4"
+  }
+}
