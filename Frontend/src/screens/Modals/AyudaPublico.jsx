@@ -138,7 +138,7 @@ export default class AyudaPublico extends Component {
                         <QRCode
                             errorLevel="H"
                             type="svg"
-                            value={`https://goph.com.co/GophGame/Publico/${this.state.cifrado}`}
+                            value={`https://goph.com.co/gophgame/Publico/${this.state.cifrado}`}
                             icon={logoGoph}
                             size={250}
                             iconSize={100}

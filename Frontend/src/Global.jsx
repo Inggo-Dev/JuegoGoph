@@ -48,7 +48,7 @@ var Global = {
 
     Ruta: {
         Raiz: "/gophgame",
-        // Url: "http://localhost:4004/api/",
+        //Url: "http://localhost:4004/japi/",
         Url: "https://goph.com.co/japi/japi/",
 
         version: "1.0.1",

@@ -17,24 +17,42 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sonido: false
+            sonido: false,
+            cont: 0,
         };
         this.soundini = new Howl({
             src: [Sound(1)],
-            volume: 1,
-            onend: () => { this.sound.play() }
+            volume: this.state.sonido ? (1) : (0),
+            onend: () => { this.soundjuego.play() }
+        });
+
+        this.soundjuego = new Howl({
+            src: [Sound(9)],
+            volume: this.state.sonido ? (1) : (0),
+            onend: () => { this.soundjuego.play() }
         });
     }
 
 
     restartSound = () => {
         var sonido = this.state.sonido
-        sonido ? (this.soundini.stop()) : (this.soundini.play())
-        this.setState({ sonido: !sonido })
+        if (parseInt(this.state.cont) === 0) {
+            this.setState({ sonido: !sonido, cont: 1 }, () => {
+                this.soundini.volume(this.state.sonido ? 1 : 0);
+                this.soundjuego.volume(this.state.sonido ? 1 : 0);
+                this.soundini.play()
+            })
+        } else {
+            this.setState({ sonido: !sonido }, () => {
+                this.soundini.volume(this.state.sonido ? 1 : 0);
+                this.soundjuego.volume(this.state.sonido ? 1 : 0);
+            })
+        }
     }
 
     componentWillUnmount() {
         this.soundini.stop();
+        this.soundjuego.stop();
     }
 
 
@@ -64,9 +82,9 @@ export default class Home extends Component {
 
     render() {
         return (
-            <div className="container-fluid" >
+            <div className="" >
 
-                <div className=" pt-2">
+                <div className=" pt-2 bg-light">
                     <div className='d-none d-md-block'>
                         <div className="d-flex justify-content-between align-items-center ">
                             <img className="Icon_S" src={Sinergia} alt="GoPH" />
@@ -98,7 +116,7 @@ export default class Home extends Component {
                             </div>
                         </div>
                         <div className="option mb-5 d-flex justify-content-center">
-                            <span className="fs-5">¡Grupo SAGA: Juega y Aprende en Propiedad Horizontal!</span>
+                            <span className="fs-5">¡Grupo SAGA: Juega y Aprende de Propiedad Horizontal!</span>
                         </div>
                         <div className="row g-3 mb-5">
                             <div className="col-12 col-md-6 ">

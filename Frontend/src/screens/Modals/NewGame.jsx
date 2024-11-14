@@ -32,13 +32,6 @@ export default class NewGame extends Component {
 
     Guardar = () => {
 
-        // var datos = {
-        //     Nombre: "Daniel Celin",
-        //     gophia: false,
-        //     id_jugador: 1
-        // }
-        // this.props.NewGame(datos)
-
         if (this.validator.allValid()) {
             this.setState({ HourGlass: true })
             var body = {
@@ -95,12 +88,12 @@ export default class NewGame extends Component {
                     </Modal.Header>
                     <Modal.Body>
                         <div className="flex-column align-items-center justify-content-center">
-                            <Input className="w-100 px-4" placeholder="Nombre del Jugador" value={this.state.Nombre} onChange={(e) => { this.setState({ Nombre: e.target.value }) }} />
+                            <Input className="w-100 px-4" placeholder="Nombre del Jugador" value={this.state.Nombre} onChange={(e) => { this.setState({ Nombre: e.target.value.toUpperCase() }) }} />
                             <label className='text-muted  m-0 px-1 txt-helper' style={{ fontSize: "11px" }}>{this.validator.message('Nombre', this.state.Nombre, 'required', { className: 'text-danger' })}</label>
                         </div>
                         <div className="col d-flex align-items-start flex-column my-2">
                             <div className="d-flex align-items-center w-100">
-                                <span className="col-5 text-secondary">¿Pregutas por GoPH IA?</span>
+                                <span className="col-5 text-secondary">¿Preguntas por GoPH IA?</span>
                                 <div className="col ms-5">
                                     <Switch checkedChildren="Si" unCheckedChildren="No" value={this.state.gophia} onChange={(e) => this.setState({ gophia: e, banco: !e })} />
                                 </div>
@@ -108,7 +101,7 @@ export default class NewGame extends Component {
                         </div>
                         <div className="col d-flex align-items-start flex-column my-2">
                             <div className="d-flex align-items-center w-100">
-                                <span className="col-5 text-secondary">¿Banco de Pregutas?</span>
+                                <span className="col-5 text-secondary">¿Banco de Preguntas?</span>
                                 <div className="col ms-5">
                                     <Switch checkedChildren="Si" unCheckedChildren="No" value={this.state.banco} onChange={(e) => this.setState({ banco: e, gophia: !e })} />
                                 </div>

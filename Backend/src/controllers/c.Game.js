@@ -240,8 +240,6 @@ function ConsultaPreguntaF(CnxBD, dificultad) {
 function ConsultaPreguntaIA(CnxBD, VarDificultad) {
     return new Promise(async (resolve, reject) => {
         try {
-
-
             let sql = "SELECT tema FROM tema WHERE estado=1 "
             const Resp = await CnxBD.query(sql);
 
@@ -249,26 +247,28 @@ function ConsultaPreguntaIA(CnxBD, VarDificultad) {
             var promp1 = ""
             var respuestas = ""
 
+  
             if (Resp[0].length > 0) {
-                promp = `eres un experto en el tema de ${Resp[0][0]["tema"]}, por ende vas a realizar una pregunta, la pregunta va por niveles, del 1 al 10, siendo 10 el nivel más alto,
-                    realiza la pregunta de nivel ${parseInt(VarDificultad)}, pero no puede pasar mas de 200 caracteres `
+                promp = `Eres un experto en el tema de ${Resp[0][0]["tema"]}, por ende vas a realizar una pregunta de cualquier aspecto del tema, la pregunta va por niveles, del 1 al 10, siendo 10 el nivel más alto,
+                    realiza la pregunta de nivel ${parseInt(VarDificultad)}, pero no puede pasar mas de 200 caracteres, Formula la pregunta de manera clara y concisa.`
             } else {
                 promp = `eres un experto en el tema de Ley 675 de 2001 Congreso de la República de Colombia, por ende vas a realizar una pregunta, la pregunta va por niveles, del 1 al 10, siendo 10 el nivel más alto,
-                    realiza la pregunta de nivel ${parseInt(VarDificultad)}, pero no puede pasar mas de 200 caracteres `
+                    realiza la pregunta de nivel ${parseInt(VarDificultad)}, pero no puede pasar mas de 200 caracteres, Formula la pregunta de manera clara y concisa. `
             }
             await CHATGPT(promp).then(async (Pregunta) => {
-                promp1 = `de acuerdo a la siguiente pregunta dame 4 opciones de respuestas, 1 correcta y 3 incorrectas  ${Pregunta.content}
-                        pero estas respuestas deben ser en formato json, como ejemplo [{respuesta: "",key: true,}, {}, {}, {}], solo me debes devolver el JSON sin mas texto, ademas las respuestas no deben superar los 50 caracteres`
+                promp1 = `de acuerdo a la siguiente pregunta dame 4 opciones de respuestas, 1 correcta y 3 incorrectas, Redacta las respuestas incorrectas para que sean casi idénticas a la correcta, cambiando un detalle mínimo (una palabra, cifras, orden de los elementos) que pueda confundir. 
+                         ${Pregunta.content}
+                         pero estas respuestas deben ser en formato json, como ejemplo [{respuesta: "",key: true,}, {}, {}, {}], solo me debes devolver el JSON sin mas texto, ademas las respuestas no deben superar los 50 caracteres`
                 await CHATGPT(promp1).then(async (Respuestas) => {
                     respuestas = Respuestas.content.match(/\[.*\]/s)[0];
                     respuestas = JSON.parse(respuestas);
-                    var indiceVerdadero = respuestas.findIndex(item => item.key === true);
-
-
+                 
                     for (let i = respuestas.length - 1; i > 0; i--) {
                         const j = Math.floor(Math.random() * (i + 1));
                         [respuestas[i], respuestas[j]] = [respuestas[j], respuestas[i]];
                     }
+
+                    var indiceVerdadero = respuestas.findIndex(item => item.key === true);
 
                     await InsertPreguntaF(CnxBD, Pregunta.content, respuestas[0].respuesta, respuestas[1].respuesta, respuestas[2].respuesta, respuestas[3].respuesta, respuestas[indiceVerdadero].respuesta, VarDificultad, 2).then(resp => {
                         resolve({ pregunta: Pregunta.content, Respuestas: respuestas, id_pregunta: resp.id })

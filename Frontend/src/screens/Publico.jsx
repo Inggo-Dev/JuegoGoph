@@ -133,11 +133,11 @@ export default class Publico extends Component {
 
         if (this.state.data) {
             return (
-                <div className="container-fluid">
+                <div className="">
                     <Modal show={this.state.HourGlass} size="md" centered onHide={() => { this.setState({ HourGlass: false }) }}>
                         <HourGlass principal={false} uno={'Preguntas'} dos={'Saga'} tres={'Estadistica'} />
                     </Modal>
-                    <div className=" p-2">
+                    <div className=" p-2 bg-light">
                         <div className='d-none d-md-block'>
                             <div className="d-flex justify-content-between align-items-center ">
                                 <img className="Icon_S" src={Sinergia} alt="GoPH" />

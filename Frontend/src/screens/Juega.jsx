@@ -29,7 +29,7 @@ export default class Juega extends Component {
             ModalPublico: false,
             data: true,
             HourGlass: false,
-            sonido: true,
+            sonido: false,
             isConfettiActive: false,
 
             Nombre: "",
@@ -44,7 +44,7 @@ export default class Juega extends Component {
             TempRespuestas: [{ label: "A" }, { label: "B" }, { label: "C" }, { label: "D" }],
 
 
-            tiempo: 30,
+            tiempo: 40,
             cincuenta: false,
             publico: false,
             llamada: false,
@@ -57,51 +57,54 @@ export default class Juega extends Component {
         };
         this.soundini = new Howl({
             src: [Sound(1)],
-            volume: 0,
+            volume: this.state.sonido ? (1) : (0),
             onend: () => { this.soundjuego.play() }
         });
         this.soundpregnta = new Howl({
             src: [Sound(2)],
-            volume: 0,
+            volume: this.state.sonido ? (1) : (0),
             onend: () => { this.soundjuego.play() }
         });
         this.soundcorrecta = new Howl({
             src: [Sound(3)],
-            volume: 0,
+            volume: this.state.sonido ? (1) : (0),
             onend: () => { this.soundjuego.play() }
         });
         this.soundincorrecta = new Howl({
             src: [Sound(4)],
-            volume: 0,
+            volume: this.state.sonido ? (1) : (0),
             onend: () => { this.soundjuego.play() }
         });
         this.soundvotacion = new Howl({
             src: [Sound(5)],
-            volume: 0,
+            volume: this.state.sonido ? (1) : (0),
             onend: () => { this.soundpregnta.play() }
         });
         this.soundtiempo = new Howl({
             src: [Sound(6)],
-            volume: 0,
+            volume: this.state.sonido ? (1) : (0),
         });
         this.soundpublico = new Howl({
             src: [Sound(7)],
-            volume: 0,
+            volume: this.state.sonido ? (1) : (0),
             onend: () => { this.soundpregnta.play() }
         });
         this.soundllamada = new Howl({
             src: [Sound(8)],
-            volume: 0,
+            volume: this.state.sonido ? (1) : (0),
             onend: () => { this.soundpregnta.play() }
         });
         this.soundjuego = new Howl({
             src: [Sound(9)],
-            volume: 0,
+            volume: this.state.sonido ? (1) : (0),
             onend: () => { this.soundjuego.play() }
         });
 
     }
 
+    componentDidMount() {
+        this.mute()
+    }
 
     stopSound = () => {
         this.soundini.stop()
@@ -122,6 +125,18 @@ export default class Juega extends Component {
         this.setState({ sonido: !sonido })
     }
 
+    mute = () => {
+        this.soundini.volume(this.state.sonido ? 1 : 0);
+        this.soundpregnta.volume(this.state.sonido ? 1 : 0);
+        this.soundcorrecta.volume(this.state.sonido ? 1 : 0);
+        this.soundincorrecta.volume(this.state.sonido ? 1 : 0);
+        this.soundvotacion.volume(this.state.sonido ? 1 : 0);
+        this.soundtiempo.volume(this.state.sonido ? 1 : 0);
+        this.soundpublico.volume(this.state.sonido ? 1 : 0);
+        this.soundllamada.volume(this.state.sonido ? 1 : 0);
+        this.soundjuego.volume(this.state.sonido ? 1 : 0);
+    }
+
     componentWillUnmount() {
         this.stopSound()
         if (this.intervalId) {
@@ -134,7 +149,7 @@ export default class Juega extends Component {
     NewGame = (data) => {
         this.stopSound()
         this.soundini.play()
-        this.setState({ Nombre: data.Nombre, gophia: data.gophia, id_jugador: data.id_jugador }, () => {
+        this.setState({ Nombre: data.Nombre, gophia: data.gophia, id_jugador: data.id_jugador, isConfettiActive: false }, () => {
             this.setState({ Modal: false })
         })
     }
@@ -146,7 +161,6 @@ export default class Juega extends Component {
         } else {
             this.BuscarPregunta(1)
         }
-
     }
 
     BuscarPregunta = (id_pregunta) => {
@@ -161,14 +175,9 @@ export default class Juega extends Component {
             if (res.data.message === "") {
                 this.setState({ HourGlass: false })
                 clearInterval(this.intervalId);
-                this.setState({ Pregunta: res.data.Pregunta, Respuestas: res.data.Respuestas, id_pregunta: res.data.id_pregunta, tiempo: 30, botonSeleccionado: null, botonVerde: null }, () => { this.iniciarConteo(), this.stopSound(), this.soundpregnta.play() })
+                this.setState({ Pregunta: res.data.Pregunta, Respuestas: res.data.Respuestas, id_pregunta: res.data.id_pregunta, tiempo: 40, botonSeleccionado: null, botonVerde: null }, () => { this.iniciarConteo(), this.stopSound(), this.soundpregnta.play() })
             } else {
-                swal({
-                    title: "ALERTA!",
-                    text: res.data.message,
-                    icon: "info",
-                    button: "Aceptar",
-                }).then(() => { Global.Pagina.componente = 0 })
+                this.IniciarPartida()
             }
         }).catch((err) => {
             this.setState({ HourGlass: false })
@@ -320,7 +329,9 @@ export default class Juega extends Component {
                     this.soundcorrecta.play()
                     this.setState({ botonSeleccionado: index, botonVerde: null, puntos: puntos }, () => { this.GuardarPuntaje() });
                 } else {
-                    this.setState({ isConfettiActive: true, puntos: puntos, botonVerde: indiceVerdadero, botonSeleccionado: index }, () => { this.GuardarPuntaje() })
+                    this.stopSound()
+                    this.soundcorrecta.play()
+                    this.setState({ isConfettiActive: true, puntos: puntos, botonVerde: indiceVerdadero, botonSeleccionado: index, llamada: true, cincuenta: true, publico: true }, () => { this.GuardarPuntaje() })
                 }
             }
         }
@@ -353,24 +364,31 @@ export default class Juega extends Component {
                 this.stopSound()
                 this.soundini.play()
                 this.setState({
+                    Modal: true,
+                    ModalPublico: false,
                     data: true,
                     HourGlass: false,
                     sonido: false,
+                    isConfettiActive: false,
                     Nombre: "",
                     id_jugador: "",
                     gophia: true,
                     Pregunta: "",
                     Respuestas: [],
-                    TempRespuestas: [{ label: "A" }, { label: "B" }, { label: "C" }, { label: "D" }],
+                    Votos: {},
                     id_pregunta: "",
+                    cifrado: "",
+                    TempRespuestas: [{ label: "A" }, { label: "B" }, { label: "C" }, { label: "D" }],
                     tiempo: 30,
                     cincuenta: false,
                     publico: false,
                     llamada: false,
                     puntos: 0,
                     botonSeleccionado: null,
-                    botonVerde: null
-                }, () => { this.setState({ Modal: true }) })
+                    botonVerde: null,
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                }, () => { this.setState({ Modal: true }, () => { this.mute() }) })
             }
         })
     }
@@ -395,7 +413,7 @@ export default class Juega extends Component {
 
         if (this.state.data) {
             return (
-                <div className="container-fluid" >
+                <div className="" >
                     <Modal show={this.state.HourGlass} size="md" centered onHide={() => { this.setState({ HourGlass: false }) }}>
                         <HourGlass principal={false} uno={'Preguntas'} dos={'Saga'} tres={'Estadistica'} />
                     </Modal>
@@ -412,20 +430,20 @@ export default class Juega extends Component {
                     <div className="container">
                         {this.state.isConfettiActive && <Confetti width={window.innerWidth} height={window.innerHeight} />}
                     </div>
-                    <div className=" pt-2">
+                    <div className=" pt-2 bg-light">
                         <div className='d-none d-md-block'>
                             <div className="d-flex justify-content-between align-items-center ">
                                 <img className="Icon_S" src={Sinergia} alt="GoPH" />
                                 <img className="Icon_G" src={Asesores} alt="GoPH" />
                                 <img className="Icon_G" src={logoGoph} alt="GoPH" />
                                 <img className="Icon_G" src={Aseco} alt="GoPH" />
-                                <button className="btn btn-outline-primary opacity-50" onClick={() => { this.restartSound() }}>{this.state.sonido ? (<i className="fa-solid fa-volume-high"></i>) : (<i className="fa-solid fa-volume-xmark"></i>)} </button>
+                                <button className="btn btn-outline-primary opacity-50" onClick={() => { this.setState({ sonido: !this.state.sonido }, () => { this.mute() }) }}>{this.state.sonido ? (<i className="fa-solid fa-volume-high"></i>) : (<i className="fa-solid fa-volume-xmark"></i>)} </button>
                             </div>
                         </div>
                         <div className='d-block d-md-none'>
                             <div className=" d-flex justify-content-center align-items-center">
                                 <img className="Icon_E" src={empresas} alt="GoPH" />
-                                <button className="btn btn-outline-primary opacity-50" onClick={() => { this.restartSound() }}>{this.state.sonido ? (<i className="fa-solid fa-volume-high"></i>) : (<i className="fa-solid fa-volume-xmark"></i>)} </button>
+                                <button className="btn btn-outline-primary opacity-50" onClick={() => { this.setState({ sonido: !this.state.sonido }, () => { this.mute() }) }}>{this.state.sonido ? (<i className="fa-solid fa-volume-high"></i>) : (<i className="fa-solid fa-volume-xmark"></i>)} </button>
                             </div>
                         </div>
                     </div>
@@ -469,7 +487,7 @@ export default class Juega extends Component {
                                         <div className="col-3 d-flex justify-content-center align-items-center mx-5 ">
 
                                             {this.state.Respuestas.length > 0 ? (
-                                                <Progress type="circle" size={200} percent={(this.state.tiempo / 30) * 100} className="tex-success" strokeWidth={7} strokeColor="#6ab7f7" format={() => `${this.state.tiempo}`} />
+                                                <Progress type="circle" size={200} percent={(this.state.tiempo / 40) * 100} className="tex-success" strokeWidth={7} strokeColor="#6ab7f7" format={() => `${this.state.tiempo}`} />
                                             ) : (
                                                 <img className="m-4 " src={SAGAC} alt="Logo_M" />
                                             )}
@@ -502,7 +520,7 @@ export default class Juega extends Component {
                                                 onClick={() => this.RespuestaParticipante(index, datos.key)}
                                                 disabled={this.state.botonSeleccionado !== null}
                                             >
-                                                <span className="pe-3">{this.Letra(index)} {datos.key ? ("Correcta") : ("")}:</span>
+                                                <span className="pe-3">{this.Letra(index)}:</span>
                                                 <span className="text-break">{datos.respuesta} </span>
                                             </button>
                                         </div>
