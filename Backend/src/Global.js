@@ -2,8 +2,8 @@
 var Global = {
 
   Ruta: {
+    // Path: "//192.168.7.90/GoPHDocs/",
     Path: "/var/tmp/GoPHDocs/",
-    //Path: "//192.168.7.90/GoPHDocs/",
   }
 };
 

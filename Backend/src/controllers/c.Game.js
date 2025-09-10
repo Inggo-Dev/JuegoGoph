@@ -15,6 +15,8 @@ export async function Verifica(req, res) {
         const Conection = CadenaConexion(VarCodigo);
         const CnxBD = ConexionBD(Conection.NomBD, Conection.UserBD, Conection.PwdBD, Conection.HostBD, Conection.Port);
 
+
+
         let sql = "SELECT password FROM usuarios WHERE id_user=:id_user"
         let rem = { replacements: { id_user: 1 } }
         const Resp = await CnxBD.query(sql, rem);
@@ -45,6 +47,7 @@ export async function NewGame(req, res) {
 
         const Conection = CadenaConexion(VarCodigo);
         const CnxBD = ConexionBD(Conection.NomBD, Conection.UserBD, Conection.PwdBD, Conection.HostBD, Conection.Port);
+
 
         var id = await CnxBD.query("SELECT nextval('Jugador_id_jugador_seq');");
 
@@ -247,7 +250,7 @@ function ConsultaPreguntaIA(CnxBD, VarDificultad) {
             var promp1 = ""
             var respuestas = ""
 
-  
+
             if (Resp[0].length > 0) {
                 promp = `Eres un experto en el tema de ${Resp[0][0]["tema"]}, por ende vas a realizar una pregunta de cualquier aspecto del tema, la pregunta va por niveles, del 1 al 10, siendo 10 el nivel más alto,
                     realiza la pregunta de nivel ${parseInt(VarDificultad)}, pero no puede pasar mas de 200 caracteres, Formula la pregunta de manera clara y concisa.`
@@ -262,7 +265,7 @@ function ConsultaPreguntaIA(CnxBD, VarDificultad) {
                 await CHATGPT(promp1).then(async (Respuestas) => {
                     respuestas = Respuestas.content.match(/\[.*\]/s)[0];
                     respuestas = JSON.parse(respuestas);
-                 
+
                     for (let i = respuestas.length - 1; i > 0; i--) {
                         const j = Math.floor(Math.random() * (i + 1));
                         [respuestas[i], respuestas[j]] = [respuestas[j], respuestas[i]];
